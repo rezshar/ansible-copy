@@ -1,0 +1,16 @@
+- hosts: "{{ myhost }}"
+#   vars:
+#    my_file: "{{ myfile }}"
+#    dest_file: "{{ destination_file }}"
+  tasks:
+    - name: Check the files exist or not
+      stat: path={{  destination_file  }}
+      register: stat
+
+    - name: Rename exist file to -old
+      command: mv {{  destination_file  }} {{  destination_file  }}-Old
+      when: stat.stat.exists
+
+    - copy:
+        src: "{{ myfile }}"
+        dest: "{{  destination_file  }}"
